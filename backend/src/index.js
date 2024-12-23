@@ -1,6 +1,9 @@
 const express = require("express");
 const env = require("dotenv")
+const cookieParser = require("cookie-parser")
 const authRoute = require("./routes/auth.route")
+const messageRoute = require("./routes/message.route")
+
 const connectDB = require("./lib/db")
 
 env.config();
@@ -10,8 +13,11 @@ const app = express();
 
 // convert request to json that we can extract res
 app.use(express.json())
+// parse cookie 
+app.use(cookieParser());
 
 app.use('/api/auth' , authRoute)
+app.use('/api/message' , messageRoute)
 
 app.listen(PORT  ,()=> {
     console.log('server is running'+ ' ' +PORT)
