@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const generateJWTtoken = require("../lib/utils");
+const cloudinary = require("../lib/cloudinary");
 
 //best practice put inside of try , catch
 const signup = async (req, res) => {
@@ -95,8 +96,46 @@ const logout = (req, res) => {
   }
 };
 
+const updateProfile = async (req, res) => {
+  try {
+    const { profilePic } = req.body;
+    console.log(req.body , 'body')
+    const userId = req.user._id;
+    if (!profilePic)
+      return res.status(400).json({ message: "Profile pic is required" });
+    const uploadedResponse = await cloudinary.uploader.upload(profilePic);
+
+    // we set new: true to get updated user field because mongo return old one as default
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { profilePic: uploadedResponse.secure_url },
+      { new: true }
+    ).select("-password");
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log("Error in updateProfile controller", error.message);
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+};
+
+const checkAuth = (req , res)=> {
+  try {
+    return res.status(200).json(req.user)
+  } catch (error) {
+    console.log("Error in checkAuth controller", error.message);
+    res.status(500).json({
+      message: "Internal Server Error",
+    });
+  }
+
+}
+
 module.exports = {
   signup,
   login,
   logout,
+  updateProfile,
+  checkAuth
 };
