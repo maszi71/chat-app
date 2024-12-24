@@ -15,7 +15,7 @@ const messageSchema = new moongose.Schema(
         text : {
             type : String,
         },
-        profilePic : {
+        image : {
             type : String,
         },
     },
