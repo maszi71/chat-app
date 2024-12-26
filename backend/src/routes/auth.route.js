@@ -12,6 +12,6 @@ route.post("/logout", logout);
 
 route.put("/update-profile" , protectRoute , updateProfile)
 
-route.get("/check-auth" , checkAuth)
+route.get("/check" , protectRoute  ,checkAuth)
 
 module.exports = route;
