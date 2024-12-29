@@ -10,7 +10,8 @@ import {
   Loader2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import AuthImagePattern from "../components/AuthImagePattern"
+import AuthImagePattern from "../components/AuthImagePattern";
+import toast from "react-hot-toast";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +22,20 @@ const Signup = () => {
   });
   const { signup, isSigningUp } = useAuthStore();
 
-  const handleSubmit = () => {};
+  const validateForm = () => {
+    if (formData.fullName === '') return toast.error("FullName is required");
+    if (formData.email === '') return toast.error("Email is required");
+    if(!/^\S+@\S+\.\S+$/.test(formData.email)) return toast.error("Invalid Email format");
+    if (formData.password === '') return toast.error("Password is required");
+    if (formData.password.length < 6) return toast.error("password must be atleast 6 characters");
+    return true
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const isValidate = validateForm(formData)
+    if(isValidate === true) signup(formData)
+  };
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
       {/* left side */}

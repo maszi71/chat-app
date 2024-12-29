@@ -1,4 +1,4 @@
-import { Routes, Route , Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Signup from "./pages/Signup";
 import Login from "./pages/login";
@@ -7,7 +7,8 @@ import Settings from "./pages/Settings";
 import Profile from "./pages/Profile";
 import { useAuthStore } from "./store/useAuthStore";
 import { useEffect } from "react";
-import {Loader }from "lucide-react";
+import { Loader } from "lucide-react";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
@@ -45,6 +46,7 @@ const App = () => {
         />
       </Routes>
       <Navbar />
+      <Toaster  />
     </>
   );
 };
