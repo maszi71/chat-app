@@ -39,7 +39,7 @@ const getMessages = async (req, res) => {
   }
 };
 
-const sendMessage = async ()=> {
+const sendMessage = async (req, res)=> {
   try {
     const { id: recieverId } = req.params;
     const senderId = req.user._id;
