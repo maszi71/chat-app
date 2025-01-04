@@ -4,13 +4,12 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const authRoute = require("./routes/auth.route");
 const messageRoute = require("./routes/message.route");
+const {app, server} = require("./lib/socket");
 
 const connectDB = require("./lib/db");
 
 env.config();
 const PORT = process.env.PORT;
-
-const app = express();
 
 // convert request to json that we can extract res
 app.use(express.json());
@@ -26,7 +25,7 @@ app.use(
 app.use("/api/auth", authRoute);
 app.use("/api/messages", messageRoute);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log("server is running" + " " + PORT);
   //call connection to DB
   connectDB();
