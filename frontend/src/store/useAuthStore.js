@@ -78,10 +78,18 @@ export const useAuthStore = create((set, get) => ({
       const { authUser } = get();
       // if user is not logged in or socket is already connected
       if (!authUser || get().socket?.connected) return;
-      const socket = io("http://localhost:5001");
+      const socket = io("http://localhost:5001" , {
+        query : {
+          userId : authUser._id
+        }
+      });
       socket.connect();
       console.log(socket,'called')
       set({ socket });
+      socket.on("getOnlineUsers" , (onlineUsers)=> {
+        console.log(onlineUsers,'onlineUsers')
+        set({onlineUsers})
+      })
     } catch (error) {
       console.log(error);
     }
