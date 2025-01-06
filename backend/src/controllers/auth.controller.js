@@ -29,6 +29,7 @@ const signup = async (req, res) => {
       fullName,
       email,
       profilePic,
+      createdAt ,
       password: hashedPassword,
     });
 
@@ -75,6 +76,8 @@ const login = async (req, res) => {
       fullName: user.fullName,
       email: user.email,
       profilePic: user.profilePic,
+      createdAt : user.createdAt
+      
     });
   } catch (error) {
     console.log("Error in login controller", error.message);
@@ -99,7 +102,6 @@ const logout = (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const { profilePic } = req.body;
-    console.log(req.body , 'body')
     const userId = req.user._id;
     if (!profilePic)
       return res.status(400).json({ message: "Profile pic is required" });
@@ -120,22 +122,21 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const checkAuth = (req , res)=> {
+const checkAuth = (req, res) => {
   try {
-    return res.status(200).json(req.user)
+    return res.status(200).json(req.user);
   } catch (error) {
     console.log("Error in checkAuth controller", error.message);
     res.status(500).json({
       message: "Internal Server Error",
     });
   }
-
-}
+};
 
 module.exports = {
   signup,
   login,
   logout,
   updateProfile,
-  checkAuth
+  checkAuth,
 };
