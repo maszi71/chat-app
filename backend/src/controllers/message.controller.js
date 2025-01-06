@@ -1,6 +1,7 @@
 const Message = require("../models/message.model");
 const User = require("../models/user.model");
 const cloudinary = require("../lib/cloudinary");
+const {getReceiverSocketId , io} = require("../lib/socket");
 
 
 const getAllUsers = async (req, res) => {
@@ -57,6 +58,15 @@ const sendMessage = async (req, res)=> {
     })
 
     await newMessage.save()
+
+  // real time message
+  const receiverSocketId = getReceiverSocketId(recieverId)
+  // if receiver is online , broadcast the message with event "newMessage"
+  if(receiverSocketId) {
+    io.to(receiverSocketId).emit("newMessage" , newMessage);
+  }
+  
+  
     return res.status(201).json(newMessage)
 
   } catch (error) {

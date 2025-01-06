@@ -8,9 +8,13 @@ const server = createServer(app);
 // define the socket
 const io = new Server(server , {
     cors: {
-        origin: '*',
+        origin: 'http://localhost:5173',
     }
 });
+
+const getReceiverSocketId = (receiverId) => {
+    return userSocketMap[receiverId]
+}
 
 // used to store online user
 const userSocketMap = {}
@@ -30,5 +34,7 @@ io.on('connection', (socket) => {
 
 module.exports = {
     app,
-    server
+    server,
+    io,
+    getReceiverSocketId
 }
